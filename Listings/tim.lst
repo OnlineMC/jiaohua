@@ -1,0 +1,74 @@
+C51 COMPILER V9.59.0.0   TIM                                                               11/05/2020 20:37:00 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE TIM
+OBJECT MODULE PLACED IN .\Objects\tim.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE tim.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\tim.l
+                    -st) TABS(2) OBJECT(.\Objects\tim.obj)
+
+line level    source
+
+   1          #include "STC15F2K60S2.H"
+   2          #include "tim.h"
+   3          #include "delay.h"
+   4          
+   5          void Cls_Peripheral(void)
+   6          {
+   7   1        P0 = 0xFF;
+   8   1        P2 = P2 & 0x1F | 0x80;      // P27~P25清零，再定位Y4C
+   9   1        P2 &= 0x1F;           // P27~P25清零
+  10   1        P0 = 0;
+  11   1        P2 = P2 & 0x1F | 0xA0;      // P27~P25清零，再定位Y5C
+  12   1        P2 &= 0x1F;           // P27~P25清零
+  13   1      }
+  14          
+  15          /*
+  16          void Timer1Init(void)   //1毫秒@12.000MHz
+  17          {
+  18            AUXR &= 0xBF;   //定时器时钟12T模式
+  19            TMOD &= 0x0F;   //设置定时器模式
+  20            TL1 = 0x18;   //设置定时初值
+  21            TH1 = 0xFC;   //设置定时初值
+  22            TF1 = 0;    //清除TF1标志
+  23            TR1 = 1;    //定时器1开始计时
+  24          
+  25          
+  26            ET1 = 1;    //补：打开定时器1中断
+  27            EA = 1;     //补：打开系统总中断
+  28          
+  29          }
+  30          */
+  31          
+  32          //配置串口 波特率9600
+  33          /*
+  34          void Timer1Init()
+  35          {
+  36            TMOD=0x20;      //定时器1确定工作方式2（8位自动重装）
+  37            TH1=0xfd;     //装入初值，高八位低八位相同，根据波特率计算，此时为9600
+  38            TL1=0xfd;
+  39            TR1=1;
+  40            
+  41            SCON=0x50;      //确定工作方式1，并打开接收使能REN
+  42            AUXR=0x00;      //12分频
+  43            
+  44            EA=1;
+  45            ES=1;
+  46            
+  47          }
+  48          */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     29    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V9.59.0.0   TIM                                                               11/05/2020 20:37:00 PAGE 2   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

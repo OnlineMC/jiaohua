@@ -1,0 +1,86 @@
+C51 COMPILER V9.59.0.0   SEG                                                               11/05/2020 20:37:00 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE SEG
+OBJECT MODULE PLACED IN .\Objects\seg.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE seg.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\seg.l
+                    -st) TABS(2) OBJECT(.\Objects\seg.obj)
+
+line level    source
+
+   1          #include <STC15F2K60S2.H>
+   2          #include "hc138.h"
+   3          #include "typedef.h"
+   4          #include "delay.h"
+   5          
+   6          void seg_display(unsigned char *str){
+   7   1        
+   8   1        uint8_t i;
+   9   1        
+  10   1        //位选0（所有数码管都不亮）
+  11   1        chip_sel(SEG_SEL);
+  12   1        P0 = 0x00;
+  13   1      
+  14   1        for(i=0 ; i<8 ; i++){
+  15   2          
+  16   2          
+  17   2          //写段码
+  18   2          chip_sel(SEG_BUS);
+  19   2          //清空数码管显示(消隐)
+  20   2          P0 = 0xFF;
+  21   2          switch(str[i])
+  22   2          {
+  23   3            case '0': P0 = 0xC0; break;
+  24   3            case '1': P0 = 0xF9; break;     
+  25   3            case '2': P0 = 0xA4; break;
+  26   3            case '3': P0 = 0xB0; break;
+  27   3            case '4': P0 = 0x99; break;
+  28   3            case '5': P0 = 0x92; break;
+  29   3            case '6': P0 = 0x82; break;
+  30   3            case '7': P0 = 0xF8; break; 
+  31   3            case '8': P0 = 0x80; break;     
+  32   3            case '9': P0 = 0x90; break;
+  33   3            
+  34   3            case 'A': P0 = 0x88; break; 
+  35   3            case 'B': P0 = 0x83; break;
+  36   3            case 'C': P0 = 0xC6; break; 
+  37   3            case 'D': P0 = 0xA1; break;     
+  38   3            case 'E': P0 = 0x86; break;
+  39   3            case 'F': P0 = 0x8E; break;       
+  40   3          
+  41   3            case 'H': P0 = 0x89; break; 
+  42   3            case 'L': P0 = 0xC7; break;
+  43   3            case 'N': P0 = 0xC8; break; 
+  44   3            case 'P': P0 = 0x8C; break;     
+  45   3            case 'U': P0 = 0xC1; break;
+  46   3            case '-': P0 = 0xBF; break;   
+  47   3            case ' ': P0 = 0xFF; break;
+  48   3            default: P0 = 0xFF; break;            
+  49   3          }
+  50   2          
+  51   2          //位选
+  52   2          chip_sel(SEG_SEL);
+  53   2          P0 = 0x01 << i;
+  54   2          
+C51 COMPILER V9.59.0.0   SEG                                                               11/05/2020 20:37:00 PAGE 2   
+
+  55   2          //显示该位1ms
+  56   2          delayms(1);
+  57   2          
+  58   2        }
+  59   1      
+  60   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    275    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
