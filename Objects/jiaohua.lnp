@@ -4,6 +4,8 @@
 ".\Objects\led.obj",
 ".\Objects\seg.obj",
 ".\Objects\hc138.obj",
-".\Objects\key.obj" 
+".\Objects\key.obj",
+".\Objects\iic.obj",
+".\Objects\dkey.obj" 
 TO ".\Objects\jiaohua" 
 PRINT(".\Listings\jiaohua.m51") RAMSIZE(256) 

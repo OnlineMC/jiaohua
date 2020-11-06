@@ -12,7 +12,7 @@ void Cls_Peripheral(void)
   P2 &= 0x1F;						// P27~P25清零
 }
 
-/*
+
 void Timer1Init(void)		//1毫秒@12.000MHz
 {
 	AUXR &= 0xBF;		//定时器时钟12T模式
@@ -27,7 +27,8 @@ void Timer1Init(void)		//1毫秒@12.000MHz
 	EA = 1;			//补：打开系统总中断
 
 }
-*/
+
+
 
 //配置串口 波特率9600
 /*

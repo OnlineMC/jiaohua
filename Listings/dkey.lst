@@ -1,0 +1,58 @@
+C51 COMPILER V9.59.0.0   DKEY                                                              11/06/2020 17:12:19 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE DKEY
+OBJECT MODULE PLACED IN .\Objects\dkey.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE dkey.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\dkey
+                    -.lst) TABS(2) OBJECT(.\Objects\dkey.obj)
+
+line level    source
+
+   1          #include <STC15F2K60S2.H>
+   2          #include "boolean.h"
+   3          #include "delay.h"
+   4          
+   5          sbit S4 = P3^3;
+   6          sbit S5 = P3^2;
+   7          
+   8          //s4 按键被按下？
+   9          bool s4_is_pressed(){
+  10   1        
+  11   1          if(!S4){
+  12   2            delayms(10);
+  13   2            if(!S4){
+  14   3              delayms(200);
+  15   3              return true;
+  16   3            }
+  17   2          }
+  18   1          
+  19   1          return false;
+  20   1      }
+  21          
+  22          //s5 按键被按下？
+  23          bool s5_is_pressed(){
+  24   1        
+  25   1          if(!S5){
+  26   2            delayms(10);
+  27   2            if(!S5){
+  28   3              delayms(200);
+  29   3              return true;
+  30   3            }
+  31   2          }
+  32   1          
+  33   1          return false;
+  34   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     52    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
