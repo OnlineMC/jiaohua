@@ -1,4 +1,4 @@
-C51 COMPILER V9.59.0.0   MAIN                                                              11/06/2020 17:57:04 PAGE 1   
+C51 COMPILER V9.59.0.0   MAIN                                                              11/06/2020 18:39:16 PAGE 1   
 
 
 C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
@@ -20,135 +20,142 @@ line level    source
   10          #include "iic.h"
   11          #include "boolean.h"
   12          #include "dkey.h"
-  13          
-  14          sbit LED = P0^0;
-  15          
+  13          #include "onewire.h"
+  14          
+  15          sbit LED = P0^0;
   16          
-  17          uint8_t s[9] = "-1- 0120";
-  18          
+  17          
+  18          uint8_t s[9] = "-1- 0120";
   19          
-  20          //记录时间切换档位 默认：120秒（1档）
-  21          uint8_t sec_mode = 1;
-  22          //可以读取光敏电阻的数值了
-  23          uint8_t pr_can_proc = 1;
-  24          
-  25          //模式一里的倒计时计数器
-  26          uint16_t sec,sec_count,pr_count;
-  27          
-  28          void init(){
-  29   1        
-  30   1        Cls_Peripheral();
-  31   1        Timer1Init();
-  32   1        reset_sel();
-  33   1      
+  20          
+  21          //记录时间切换档位 默认：120秒（1档）
+  22          uint8_t sec_mode = 1;
+  23          //可以读取光敏电阻的数值了
+  24          uint8_t pr_can_proc = 1;
+  25          
+  26          //模式一里的倒计时计数器
+  27          uint16_t sec,sec_count,pr_count;
+  28          
+  29          void init(){
+  30   1        
+  31   1        Cls_Peripheral();
+  32   1        Timer1Init();
+  33   1        reset_sel();
   34   1      
-  35   1      }
-  36          
-  37          void mode1(){
-  38   1        
-  39   1        sec = 120;
-  40   1        
-  41   1        while(1){
-  42   2          sprintf(s, "-1- 0%03d", sec);
-  43   2          seg_display(s);
-  44   2          
-  45   2          //S4按键被按下，退出函数
-  46   2          if(s4_is_pressed())return;
-  47   2          
-  48   2          //如果s5按键被按下，调整时间
-  49   2          if(s5_is_pressed()){
-  50   3      
-  51   3            switch(sec_mode){
-  52   4              case(0):
-  53   4                sec_mode = 1;
-  54   4                sec = 120;
-C51 COMPILER V9.59.0.0   MAIN                                                              11/06/2020 17:57:04 PAGE 2   
+  35   1      
+  36   1      }
+  37          
+  38          void mode1(){
+  39   1        
+  40   1        sec = 120;
+  41   1        
+  42   1        while(1){
+  43   2          sprintf(s, "-1- 0%03d", sec);
+  44   2          seg_display(s);
+  45   2          
+  46   2          //S4按键被按下，退出函数
+  47   2          if(s4_is_pressed())return;
+  48   2          
+  49   2          //如果s5按键被按下，调整时间
+  50   2          if(s5_is_pressed()){
+  51   3      
+  52   3            switch(sec_mode){
+  53   4              case(0):
+  54   4                sec_mode = 1;
+C51 COMPILER V9.59.0.0   MAIN                                                              11/06/2020 18:39:16 PAGE 2   
 
-  55   4                break;
-  56   4              case(1):
-  57   4                sec_mode = 2;
-  58   4                sec = 240;
-  59   4                break;
-  60   4              default:
-  61   4                sec_mode = 0;
-  62   4                sec = 0;
-  63   4            }
-  64   3      
-  65   3          }
-  66   2        }
-  67   1      
-  68   1      }
-  69          
-  70          void mode2(){
-  71   1      
-  72   1        uint8_t temp;
-  73   1        while(1){
-  74   2          //如果读光敏电阻的标志=1 说明可以刷新数值了
-  75   2          if(pr_can_proc){
-  76   3            pr_can_proc = 0;
-  77   3            temp = PCF891_Adc();
-  78   3          }
-  79   2          
-  80   2          sprintf(s, "%03d  25C", (uint16_t)temp);
-  81   2          seg_display(s);
-  82   2          
-  83   2          //S4按键被按下，退出函数
-  84   2          if(s4_is_pressed())return;
-  85   2        }
-  86   1        
-  87   1        
-  88   1      
-  89   1      }
-  90          
-  91          /*
-  92          void SentByte(uint8_t x)
-  93          {
-  94            SBUF=x;
-  95            while(TI==0);
-  96            TI=0;
-  97          }
-  98          */
-  99          
- 100          void main(){
- 101   1        
- 102   1        init();
- 103   1        P0 = 0xFF;
- 104   1        
- 105   1        while(1){
- 106   2          
- 107   2          //mode1();
- 108   2          mode2();
- 109   2        
- 110   2        }
+  55   4                sec = 120;
+  56   4                break;
+  57   4              case(1):
+  58   4                sec_mode = 2;
+  59   4                sec = 240;
+  60   4                break;
+  61   4              default:
+  62   4                sec_mode = 0;
+  63   4                sec = 0;
+  64   4            }
+  65   3      
+  66   3          }
+  67   2        }
+  68   1      
+  69   1      }
+  70          
+  71          void mode2(){
+  72   1      
+  73   1        uint8_t pr_val;
+  74   1        float temp;
+  75   1        while(1){
+  76   2          
+  77   2          
+  78   2          //如果读光敏电阻的标志=1 说明可以刷新数值了
+  79   2          if(pr_can_proc){
+  80   3            pr_can_proc = 0;
+  81   3            pr_val = PCF891_Adc();
+  82   3            
+  83   3            temp = rd_temperature()/16.0;
+  84   3            
+  85   3          }
+  86   2          
+  87   2          sprintf(s, "%03d  %02dC", (uint16_t)pr_val, (uint16_t)temp);
+  88   2          seg_display(s);
+  89   2          
+  90   2          //S4按键被按下，退出函数
+  91   2          if(s4_is_pressed())return;
+  92   2        }
+  93   1        
+  94   1        
+  95   1      
+  96   1      }
+  97          
+  98          /*
+  99          void SentByte(uint8_t x)
+ 100          {
+ 101            SBUF=x;
+ 102            while(TI==0);
+ 103            TI=0;
+ 104          }
+ 105          */
+ 106          
+ 107          void main(){
+ 108   1        
+ 109   1        init();
+ 110   1        P0 = 0xFF;
  111   1        
- 112   1      }
- 113          
- 114          
- 115          void timer1_int() interrupt 3{
- 116   1        
-C51 COMPILER V9.59.0.0   MAIN                                                              11/06/2020 17:57:04 PAGE 3   
+ 112   1        while(1){
+ 113   2          
+ 114   2          //mode1();
+ 115   2          mode2();
+ 116   2        
+C51 COMPILER V9.59.0.0   MAIN                                                              11/06/2020 18:39:16 PAGE 3   
 
- 117   1        if(++sec_count >= 1000){
- 118   2          sec_count = 0;
- 119   2          if(sec > 0){
- 120   3            sec--;
- 121   3          }
- 122   2        }
+ 117   2        }
+ 118   1        
+ 119   1      }
+ 120          
+ 121          
+ 122          void timer1_int() interrupt 3{
  123   1        
- 124   1        if(++pr_count >= 500){
- 125   2          pr_count = 0;
- 126   2          pr_can_proc = 1;
- 127   2        }
- 128   1      
- 129   1      }
+ 124   1        if(++sec_count >= 1000){
+ 125   2          sec_count = 0;
+ 126   2          if(sec > 0){
+ 127   3            sec--;
+ 128   3          }
+ 129   2        }
+ 130   1        
+ 131   1        if(++pr_count >= 500){
+ 132   2          pr_count = 0;
+ 133   2          pr_can_proc = 1;
+ 134   2        }
+ 135   1      
+ 136   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    236    ----
-   CONSTANT SIZE    =     20    ----
+   CODE SIZE        =    280    ----
+   CONSTANT SIZE    =     22    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     17       1
+   DATA SIZE        =     17       5
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

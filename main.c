@@ -10,6 +10,7 @@
 #include "iic.h"
 #include "boolean.h"
 #include "dkey.h"
+#include "onewire.h"
 
 sbit LED = P0^0;
 
@@ -69,15 +70,22 @@ void mode1(){
 
 void mode2(){
 
-	uint8_t temp;
+	uint8_t pr_val;
+	float temp;
 	while(1){
-		//如果读光敏电阻的标志=1 说明可以刷新数值了
+		
+		
+		//如果读光敏电阻的标志=1 说明可以刷新数值了(顺便也可以把DS18B20的温度读了)
 		if(pr_can_proc){
 			pr_can_proc = 0;
-			temp = PCF891_Adc();
+			pr_val = PCF891_Adc();
+			
+			temp = rd_temperature()/16.0;
+			
 		}
 		
-		sprintf(s, "%03d  25C", (uint16_t)temp);
+		//+0.5四舍五入 没毛病
+		sprintf(s, "%03d  %02dC", (uint16_t)pr_val, (uint16_t)temp+0.5);
 		seg_display(s);
 		
 		//S4按键被按下，退出函数
