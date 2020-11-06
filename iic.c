@@ -105,7 +105,7 @@ unsigned char IIC_RecByte(void)
 }
 
 
-#ifdef PCF8591_ADC
+//#ifdef PCF8591_ADC
 unsigned char PCF891_Adc(void)
 {
 	unsigned char temp;
@@ -114,7 +114,7 @@ unsigned char PCF891_Adc(void)
 	IIC_SendByte(0X90);//选中PCF8691,通过地址选中，写命令，为下一条服务
 	IIC_WaitAck();
 	
-	IIC_SendByte(0X43);//选中通道3，通过控制字
+	IIC_SendByte(0X41);//选中通道3，通过控制字
 	IIC_WaitAck();	
 
 	IIC_Start();
@@ -128,7 +128,7 @@ unsigned char PCF891_Adc(void)
 	return temp;
 }
 
-#endif
+//#endif
 
 
 

@@ -16,19 +16,21 @@ sbit LED = P0^0;
 
 uint8_t s[9] = "-1- 0120";
 
-uint8_t key_value,mode;
+
+//记录时间切换档位 默认：120秒（1档）
 uint8_t sec_mode = 1;
+//可以读取光敏电阻的数值了
+uint8_t pr_can_proc = 1;
 
 //模式一里的倒计时计数器
-uint16_t sec,sec_count;
+uint16_t sec,sec_count,pr_count;
 
 void init(){
 	
 	Cls_Peripheral();
 	Timer1Init();
 	reset_sel();
-	//在数码管上显示模式一的初始内容
-	seg_display(s);
+
 
 }
 
@@ -41,9 +43,7 @@ void mode1(){
 		seg_display(s);
 		
 		//S4按键被按下，退出函数
-		if(s4_is_pressed()){
-			return;
-		}
+		if(s4_is_pressed())return;
 		
 		//如果s5按键被按下，调整时间
 		if(s5_is_pressed()){
@@ -69,17 +69,19 @@ void mode1(){
 
 void mode2(){
 
-	int temp;
+	uint8_t temp;
 	while(1){
-		temp = PCF891_Adc();
-		sprintf(s, "%03d  25C", sec);
+		//如果读光敏电阻的标志=1 说明可以刷新数值了
+		if(pr_can_proc){
+			pr_can_proc = 0;
+			temp = PCF891_Adc();
+		}
+		
+		sprintf(s, "%03d  25C", (uint16_t)temp);
 		seg_display(s);
 		
 		//S4按键被按下，退出函数
-		if(s4_is_pressed()){
-
-			return;
-		}
+		if(s4_is_pressed())return;
 	}
 	
 	
@@ -102,7 +104,7 @@ void main(){
 	
 	while(1){
 		
-		mode1();
+		//mode1();
 		mode2();
 	
 	}
@@ -117,6 +119,11 @@ void timer1_int() interrupt 3{
 		if(sec > 0){
 			sec--;
 		}
+	}
+	
+	if(++pr_count >= 500){
+		pr_count = 0;
+		pr_can_proc = 1;
 	}
 
 }
