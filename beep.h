@@ -1,0 +1,1 @@
+void set_beep(bool bb);

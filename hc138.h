@@ -11,6 +11,6 @@
 #define SEG_BUS 7
 #define SEG_SEL 6
 #define LED_BUS 4
+#define BUFFER 5
 
 void chip_sel(unsigned char selbit);
-void reset_sel();

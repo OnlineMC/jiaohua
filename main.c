@@ -6,13 +6,11 @@
 #include "hc138.h"
 #include "led.h"
 #include "seg.h"
-#include "key.h"
 #include "iic.h"
 #include "boolean.h"
 #include "dkey.h"
 #include "onewire.h"
-
-sbit LED = P0^0;
+#include "beep.h"
 
 
 uint8_t s[9] = "-1- 0120";
@@ -23,15 +21,24 @@ uint8_t sec_mode = 1;
 //可以读取光敏电阻的数值了
 uint8_t pr_can_proc = 1;
 
+uint8_t led_flip_flag;
+bool led_flag;
+
 //模式一里的倒计时计数器
-uint16_t sec,sec_count,pr_count;
+uint16_t sec,sec_count,pr_count,led_flip_count;
+
+bool en_beep;
 
 void init(){
 	
 	Cls_Peripheral();
 	Timer1Init();
-	reset_sel();
 	//UARTInit();
+	
+	chip_sel(BUFFER);
+	P0 = 0x00;
+	chip_sel(LED_BUS);
+	P0 = 0xFF;
 
 }
 
@@ -52,8 +59,20 @@ void mode1(){
 		sprintf(s, "-1- 0%03d", sec);
 		seg_display(s);
 		
+		if(led_flip_flag){
+		
+			led_flip_flag = 0;
+			set_led1(led_flag);
+			
+		}
+		
 		//S4按键被按下，退出函数
-		if(s4_is_pressed())return;
+		if(s4_is_pressed()){
+			led_flag = false;
+			seg_clean();
+			set_beep(false);
+			return;
+		}
 		
 		//如果s5按键被按下，调整时间
 		if(s5_is_pressed()){
@@ -93,13 +112,27 @@ void mode2(){
 			
 		}
 		
+
+		
 		//+0.5四舍五入 没毛病
 		sprintf(s, "%03d  %02dC", (uint16_t)pr_val, temp);
 		//sprintf(s, "FFFFFFFF");
 		seg_display(s);
 		
+		if(led_flip_flag){
+		
+			led_flip_flag = 0;
+			set_led2(led_flag);
+		}
+		
+		
 		//S4按键被按下，退出函数
-		if(s4_is_pressed())return;
+		if(s4_is_pressed()){
+			led_flag = false;
+			seg_clean();
+			set_beep(false);
+			return;
+		}
 	}
 	
 	
@@ -113,9 +146,11 @@ void main(){
 	P0 = 0xFF;
 	
 	while(1){
+		//led_flow();
 		
-		mode1();
+		
 		mode2();
+		mode1();
 	
 	}
 	
@@ -134,6 +169,12 @@ void timer1_int() interrupt 3{
 	if(++pr_count >= 500){
 		pr_count = 0;
 		pr_can_proc = 1;
+	}
+	
+	if(++led_flip_count >= 500){
+		led_flag = !led_flag;
+		led_flip_flag = 1;
+		led_flip_count = 0;
 	}
 
 }

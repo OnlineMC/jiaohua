@@ -32,7 +32,7 @@ void Timer1Init(void)		//1毫秒@12.000MHz
 
 //配置串口 波特率9600
 /*
-void Timer1Init()
+void UARTInit()
 {
 	TMOD=0x20;			//定时器1确定工作方式2（8位自动重装）
 	TH1=0xfd;			//装入初值，高八位低八位相同，根据波特率计算，此时为9600

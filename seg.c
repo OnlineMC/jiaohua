@@ -58,3 +58,8 @@ void seg_display(unsigned char *str){
 	}
 
 }
+
+void seg_clean(){
+	chip_sel(SEG_BUS);
+	P0 = 0xFF;
+}

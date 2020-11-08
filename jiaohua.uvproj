@@ -407,11 +407,6 @@
               <FilePath>.\hc138.c</FilePath>
             </File>
             <File>
-              <FileName>key.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\key.c</FilePath>
-            </File>
-            <File>
               <FileName>dkey.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\dkey.c</FilePath>
@@ -425,6 +420,11 @@
               <FileName>onewire.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\onewire.c</FilePath>
+            </File>
+            <File>
+              <FileName>beep.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\beep.c</FilePath>
             </File>
           </Files>
         </Group>

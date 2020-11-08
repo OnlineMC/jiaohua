@@ -1,4 +1,4 @@
-C51 COMPILER V9.59.0.0   TIM                                                               11/06/2020 18:39:17 PAGE 1   
+C51 COMPILER V9.59.0.0   TIM                                                               11/08/2020 19:57:16 PAGE 1   
 
 
 C51 COMPILER V9.59.0.0, COMPILATION OF MODULE TIM
@@ -42,7 +42,7 @@ line level    source
   32          
   33          //配置串口 波特率9600
   34          /*
-  35          void Timer1Init()
+  35          void UARTInit()
   36          {
   37            TMOD=0x20;      //定时器1确定工作方式2（8位自动重装）
   38            TH1=0xfd;     //装入初值，高八位低八位相同，根据波特率计算，此时为9600
@@ -62,7 +62,7 @@ line level    source
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =     50    ----
    CONSTANT SIZE    =   ----    ----
-C51 COMPILER V9.59.0.0   TIM                                                               11/06/2020 18:39:17 PAGE 2   
+C51 COMPILER V9.59.0.0   TIM                                                               11/08/2020 19:57:16 PAGE 2   
 
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

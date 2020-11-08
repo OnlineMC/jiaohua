@@ -15,10 +15,3 @@ void chip_sel(uint8_t selbit){
 	LSC = (selbit >> 2) & 0x01;
 
 }
-
-//Ë­TM¶¼²»Ñ¡
-void reset_sel(){
-	LSA = 0;
-	LSB = 0;
-	LSC = 0;
-}
