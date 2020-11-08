@@ -31,9 +31,18 @@ void init(){
 	Cls_Peripheral();
 	Timer1Init();
 	reset_sel();
-
+	//UARTInit();
 
 }
+
+/*
+void SentByte(uint8_t x)
+{
+	SBUF=x;
+	while(TI==0);
+	TI=0;
+}
+*/
 
 void mode1(){
 	
@@ -71,7 +80,7 @@ void mode1(){
 void mode2(){
 
 	uint8_t pr_val;
-	float temp;
+	uint16_t temp;
 	while(1){
 		
 		
@@ -80,12 +89,13 @@ void mode2(){
 			pr_can_proc = 0;
 			pr_val = PCF891_Adc();
 			
-			temp = rd_temperature()/16.0;
+			temp = (uint16_t)(rd_temperature()/16.0)+0.5;
 			
 		}
 		
 		//+0.5四舍五入 没毛病
-		sprintf(s, "%03d  %02dC", (uint16_t)pr_val, (uint16_t)temp+0.5);
+		sprintf(s, "%03d  %02dC", (uint16_t)pr_val, temp);
+		//sprintf(s, "FFFFFFFF");
 		seg_display(s);
 		
 		//S4按键被按下，退出函数
@@ -96,14 +106,6 @@ void mode2(){
 
 }
 
-/*
-void SentByte(uint8_t x)
-{
-	SBUF=x;
-	while(TI==0);
-	TI=0;
-}
-*/
 
 void main(){
 	
@@ -112,7 +114,7 @@ void main(){
 	
 	while(1){
 		
-		//mode1();
+		mode1();
 		mode2();
 	
 	}
