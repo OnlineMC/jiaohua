@@ -127,17 +127,21 @@ void mode2(){
 		sprintf(s, "%03d  %02dC", (uint16_t)pr_val, temp);
 		//sprintf(s, "FFFFFFFF");
 		seg_display(s);
-		
 		if(led_flip_flag){
 		
 			led_flip_flag = 0;
-			set_led2(led_flag);
+			
 			
 			if(temp > 25 | pr_val > 200){
 				togg_beep();
 			}else{
 				set_beep(false);
 			}
+			
+			P0 = 0xFF;
+			set_led2(led_flag);
+			
+			
 		}
 		
 		
