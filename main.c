@@ -58,8 +58,9 @@ void mode1(){
 		sprintf(s, "-1- 0%03d", sec);
 		seg_display(s);
 		
-		if(sec == 0){
+		if(sec == 0 | s6_is_pressed()){
 		
+			sec = 0;
 			led_flip_flag = 0;
 			set_led1(true);
 		}
