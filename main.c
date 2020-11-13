@@ -130,6 +130,12 @@ void mode2(){
 		
 			led_flip_flag = 0;
 			set_led2(led_flag);
+			
+			if(temp > 25 | pr_val > 200){
+				togg_beep();
+			}else{
+				set_beep(false);
+			}
 		}
 		
 		
@@ -152,7 +158,7 @@ void main(){
 	init();
 	P0 = 0xFF;
 	
-	//led_flow();
+	led_flow();
 	while(1){
 		
 		mode2();
