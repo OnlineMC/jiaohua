@@ -54,6 +54,8 @@ void SentByte(uint8_t x)
 
 void mode1(){
 	
+	sec = 120;
+	
 	while(1){
 		sprintf(s, "-1- 0%03d", sec);
 		seg_display(s);
