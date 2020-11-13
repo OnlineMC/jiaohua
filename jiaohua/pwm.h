@@ -1,0 +1,1 @@
+void pwm_write(float duty_cycle);

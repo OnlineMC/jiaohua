@@ -1,0 +1,12 @@
+".\Objects\main.obj",
+".\Objects\uart.obj",
+".\Objects\delay.obj",
+".\Objects\tim.obj",
+".\Objects\hc138.obj",
+".\Objects\seg.obj",
+".\Objects\dkey.obj",
+".\Objects\iic.obj",
+".\Objects\onewire.obj",
+".\Objects\beep.obj" 
+TO ".\Objects\uart_temp" 
+PRINT(".\Listings\uart_temp.m51") RAMSIZE(256) 

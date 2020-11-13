@@ -1,0 +1,82 @@
+C51 COMPILER V9.59.0.0   DKEY                                                              11/13/2020 17:06:18 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE DKEY
+OBJECT MODULE PLACED IN .\Objects\dkey.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE dkey.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\dkey
+                    -.lst) TABS(2) OBJECT(.\Objects\dkey.obj)
+
+line level    source
+
+   1          #include <STC15F2K60S2.H>
+   2          #include "boolean.h"
+   3          #include "delay.h"
+   4          
+   5          sbit S4 = P3^3;
+   6          sbit S5 = P3^2;
+   7          sbit S6 = P3^1;
+   8          sbit S7 = P3^0;
+   9          
+  10          //s4 按键被按下？
+  11          bool s4_is_pressed(){
+  12   1        
+  13   1          if(!S4){
+  14   2            delayms(10);
+  15   2            while(!S4);
+  16   2            return true;
+  17   2          }
+  18   1          
+  19   1          return false;
+  20   1      }
+  21          
+  22          //s5 按键被按下？
+  23          bool s5_is_pressed(){
+  24   1        
+  25   1          if(!S5){
+  26   2            delayms(10);
+  27   2            while(!S5);
+  28   2            return true;
+  29   2          }
+  30   1          
+  31   1          return false;
+  32   1      }
+  33          
+  34          //s6 按键被按下？
+  35          bool s6_is_pressed(){
+  36   1        
+  37   1          if(!S6){
+  38   2            delayms(10);
+  39   2            while(!S6);
+  40   2            return true;
+  41   2          }
+  42   1          
+  43   1          return false;
+  44   1      }
+  45          
+  46          //s7 按键被按下？
+  47          bool s7_is_pressed(){
+  48   1        
+  49   1          if(!S7){
+  50   2            delayms(10);
+  51   2            while(!S7);
+  52   2            return true;
+  53   2          }
+  54   1          
+C51 COMPILER V9.59.0.0   DKEY                                                              11/13/2020 17:06:18 PAGE 2   
+
+  55   1          return false;
+  56   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     76    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

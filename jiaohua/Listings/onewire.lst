@@ -1,0 +1,124 @@
+C51 COMPILER V9.59.0.0   ONEWIRE                                                           11/13/2020 17:06:19 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE ONEWIRE
+OBJECT MODULE PLACED IN .\Objects\onewire.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE onewire.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\o
+                    -newire.lst) TABS(2) OBJECT(.\Objects\onewire.obj)
+
+line level    source
+
+   1          #include "onewire.h"
+   2          
+   3          sbit DQ = P1^4;
+   4          
+   5          ////单总线延时函数
+   6          void Delay_OneWire(unsigned int t)  
+   7          {
+   8   1        unsigned char i;
+   9   1        while(t--){
+  10   2          for(i=0;i<12;i++);
+  11   2        }
+  12   1      }
+  13          
+  14          void Delay_us(void)
+  15          {
+  16   1        unsigned char i;
+  17   1      
+  18   1        i = 30;
+  19   1        while (--i);
+  20   1      }
+  21          
+  22          //通过单总线向DS18B20写一个字节
+  23          void Write_DS18B20(unsigned char dat)
+  24          {
+  25   1        unsigned char i;
+  26   1        for(i=0;i<8;i++)
+  27   1        {
+  28   2          DQ = 0;
+  29   2          DQ = dat&0x01;
+  30   2          Delay_OneWire(5);
+  31   2          DQ = 1;
+  32   2          dat >>= 1;
+  33   2        }
+  34   1        Delay_OneWire(5);
+  35   1      
+  36   1      }
+  37          
+  38          //从DS18B20读取一个字节
+  39          unsigned char Read_DS18B20(void)
+  40          {
+  41   1        unsigned char i;
+  42   1        unsigned char dat;
+  43   1      //  unsigned char index = 0;
+  44   1              
+  45   1        for(i=0;i<8;i++)
+  46   1        {
+  47   2          DQ = 0;
+  48   2          dat >>= 1;
+  49   2          DQ = 1; 
+  50   2            Delay_us();
+  51   2      
+  52   2          if(DQ)  
+  53   2          {
+  54   3            dat |= 0x80;
+C51 COMPILER V9.59.0.0   ONEWIRE                                                           11/13/2020 17:06:19 PAGE 2   
+
+  55   3          }     
+  56   2          Delay_OneWire(5);
+  57   2        }
+  58   1        return dat;
+  59   1      }
+  60          
+  61          //DS18B20初始化
+  62          bit init_ds18b20(void)
+  63          {
+  64   1          bit initflag = 0;
+  65   1          
+  66   1          DQ = 1;
+  67   1          Delay_OneWire(12);
+  68   1          DQ = 0;
+  69   1      
+  70   1          Delay_OneWire(80); // 延时大于480us
+  71   1          DQ = 1;
+  72   1          Delay_OneWire(10);  // 14
+  73   1          initflag = DQ;     // initflag等于1初始化失败
+  74   1          Delay_OneWire(5);
+  75   1        
+  76   1          return initflag;
+  77   1      }
+  78          
+  79          //DS18B20温度采集程序
+  80          unsigned int rd_temperature(void)
+  81          {
+  82   1        unsigned char low,high;
+  83   1        
+  84   1        init_ds18b20();
+  85   1        Write_DS18B20(0xCC);
+  86   1        Write_DS18B20(0x44);  
+  87   1        
+  88   1        init_ds18b20();
+  89   1        Write_DS18B20(0xCC);
+  90   1        Write_DS18B20(0xBE);  
+  91   1        
+  92   1        low=Read_DS18B20();
+  93   1        high=Read_DS18B20();
+  94   1      
+  95   1        return (high<<8)+low;
+  96   1        
+  97   1      }
+  98          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    196    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

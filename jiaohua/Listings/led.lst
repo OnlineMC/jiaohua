@@ -1,0 +1,75 @@
+C51 COMPILER V9.59.0.0   LED                                                               11/13/2020 17:06:18 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE LED
+OBJECT MODULE PLACED IN .\Objects\led.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE led.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\led.l
+                    -st) TABS(2) OBJECT(.\Objects\led.obj)
+
+line level    source
+
+   1          #include "STC15F2K60S2.H"
+   2          #include "delay.h"
+   3          #include "typedef.h"
+   4          #include "hc138.h"
+   5          #include "led.h"
+   6          #include "boolean.h"
+   7          
+   8          sbit led1 = P0^0;
+   9          sbit led2 = P0^1;
+  10          sbit led3 = P0^2;
+  11          
+  12          void led_flow(){
+  13   1      
+  14   1        uint8_t i;
+  15   1        
+  16   1        chip_sel(LED_BUS);
+  17   1        for(i=0 ; i<8 ; i++){
+  18   2      
+  19   2          P0 = ~(0x01<<i);
+  20   2          delayms(500);
+  21   2        }
+  22   1        
+  23   1      }
+  24          
+  25          //led_bit: 要点亮的LED位，1~8
+  26          //status: true点亮led_bit位的LED，false直接关闭所有位的LED
+  27          void set_led1(bool status){
+  28   1      
+  29   1        chip_sel(LED_BUS);
+  30   1        P0 = 0xFF;
+  31   1        delayms(1);
+  32   1        led1 = status;
+  33   1      }
+  34          
+  35          void set_led2(bool status){
+  36   1      
+  37   1        chip_sel(LED_BUS);
+  38   1        P0 = 0xFF;
+  39   1        delayms(1);
+  40   1        led2 = status;
+  41   1      }
+  42          
+  43          void set_led3(bool status){
+  44   1      
+  45   1        chip_sel(LED_BUS);
+  46   1        P0 = 0xFF;
+  47   1        delayms(1);
+  48   1        led3 = status;
+  49   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    119    ----
+   CONSTANT SIZE    =   ----    ----
+C51 COMPILER V9.59.0.0   LED                                                               11/13/2020 17:06:18 PAGE 2   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
