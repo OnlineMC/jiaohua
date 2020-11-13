@@ -145,9 +145,8 @@ void main(){
 	init();
 	P0 = 0xFF;
 	
+	//led_flow();
 	while(1){
-		//led_flow();
-		
 		
 		mode2();
 		mode1();
