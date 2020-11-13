@@ -28,7 +28,7 @@ bool led_flag;
 uint16_t sec_count,pr_count,led_flip_count;
 uint16_t sec = 120;
 
-bool en_beep;
+bool en_beep = true;
 
 void init(){
 	
@@ -123,7 +123,6 @@ void mode2(){
 		
 
 		
-		//+0.5四舍五入 没毛病
 		sprintf(s, "%03d  %02dC", (uint16_t)pr_val, temp);
 		//sprintf(s, "FFFFFFFF");
 		seg_display(s);
@@ -132,7 +131,7 @@ void mode2(){
 			led_flip_flag = 0;
 			
 			
-			if(temp > 25 | pr_val > 200){
+			if((temp > 25 | pr_val > 200) & en_beep){
 				togg_beep();
 			}else{
 				set_beep(false);
@@ -151,6 +150,10 @@ void mode2(){
 			seg_clean();
 			set_beep(false);
 			return;
+		}
+		
+		if(s7_is_pressed()){
+			en_beep = false;
 		}
 	}
 	
