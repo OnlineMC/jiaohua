@@ -11,10 +11,8 @@ bool s4_is_pressed(){
 	
 		if(!S4){
 			delayms(10);
-			if(!S4){
-				delayms(200);
-				return true;
-			}
+			while(!S4);
+			return true;
 		}
 		
 		return false;
@@ -25,10 +23,8 @@ bool s5_is_pressed(){
 	
 		if(!S5){
 			delayms(10);
-			if(!S5){
-				delayms(200);
-				return true;
-			}
+			while(!S5);
+			return true;
 		}
 		
 		return false;
@@ -39,10 +35,8 @@ bool s6_is_pressed(){
 	
 		if(!S6){
 			delayms(10);
-			if(!S6){
-				delayms(200);
-				return true;
-			}
+			while(!S6);
+			return true;
 		}
 		
 		return false;
