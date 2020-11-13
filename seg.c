@@ -55,6 +55,10 @@ void seg_display(unsigned char *str){
 		//显示该位1ms
 		delayms(1);
 		
+		//写段码
+		chip_sel(SEG_BUS);
+		//清空数码管显示(消隐)
+		P0 = 0xFF;
 	}
 
 }
