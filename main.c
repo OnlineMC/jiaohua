@@ -25,7 +25,8 @@ uint8_t led_flip_flag;
 bool led_flag;
 
 //模式一里的倒计时计数器
-uint16_t sec,sec_count,pr_count,led_flip_count;
+uint16_t sec_count,pr_count,led_flip_count;
+uint16_t sec = 120;
 
 bool en_beep;
 
@@ -53,11 +54,15 @@ void SentByte(uint8_t x)
 
 void mode1(){
 	
-	sec = 120;
-	
 	while(1){
 		sprintf(s, "-1- 0%03d", sec);
 		seg_display(s);
+		
+		if(sec == 0){
+		
+			led_flip_flag = 0;
+			set_led1(true);
+		}
 		
 		if(led_flip_flag){
 		
@@ -71,6 +76,7 @@ void mode1(){
 			led_flag = false;
 			seg_clean();
 			set_beep(false);
+			sec = 120;
 			return;
 		}
 		
@@ -172,8 +178,10 @@ void timer1_int() interrupt 3{
 	
 	if(++led_flip_count >= 500){
 		led_flag = !led_flag;
-		led_flip_flag = 1;
 		led_flip_count = 0;
+		if(sec == 0) return;
+		led_flip_flag = 1;
+		
 	}
 
 }
